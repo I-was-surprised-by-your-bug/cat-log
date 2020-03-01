@@ -1,6 +1,4 @@
 # cat-log
-![Progress](http://progressed.io/bar/1?title=completed)  
-
 🚧 Hello, this is a blog in development. 🚧
 
 ## built with:
