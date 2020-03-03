@@ -2,6 +2,8 @@ using AutoMapper;
 using CatLog.Api.Data.Contexts;
 using CatLog.Api.Data.Implements;
 using CatLog.Api.Data.Interfaces;
+using CatLog.Api.Services.Implements;
+using CatLog.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -66,6 +68,9 @@ namespace CatLog.Api
             });
 
             services.AddScoped<IArticleDao, ArticleDao>();
+
+            // Ù–‘”≥…‰∑˛ŒÒ
+            services.AddTransient<IPropertyMappingService, PropertyMappingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
