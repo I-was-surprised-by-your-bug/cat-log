@@ -14,7 +14,12 @@
         /// <summary>
         /// 数据塑形参数
         /// </summary>
-        public string Fields { get; set; }
+        public string Select { get; set; }
+
+        /// <summary>
+        /// 排序参数
+        /// </summary>
+        public string OrderBy { get; set; }
 
         /// <summary>
         /// 单页条目数

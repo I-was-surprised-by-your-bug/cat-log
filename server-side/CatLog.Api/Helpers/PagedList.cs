@@ -52,7 +52,7 @@ namespace CatLog.Api.Helpers
         }
 
         /// <summary>
-        /// 对资源集合进行翻页处理（视频P35)
+        /// 对资源集合进行翻页处理
         /// </summary>
         /// <param name="source">待翻页的资源集合</param>
         /// <param name="pageNumber">指定页码（当前页）</param>

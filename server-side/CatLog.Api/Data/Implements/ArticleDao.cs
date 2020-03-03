@@ -3,6 +3,8 @@ using CatLog.Api.Data.Interfaces;
 using CatLog.Api.DtoParameters;
 using CatLog.Api.Entities;
 using CatLog.Api.Helpers;
+using CatLog.Api.Models;
+using CatLog.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -13,10 +15,12 @@ namespace CatLog.Api.Data.Implements
     public class ArticleDao : IArticleDao
     {
         private readonly DbCatLogContext _context;
+        private readonly IPropertyMappingService _propertyMappingService;
 
-        public ArticleDao(DbCatLogContext context)
+        public ArticleDao(DbCatLogContext context, IPropertyMappingService propertyMappingService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _propertyMappingService = propertyMappingService ?? throw new ArgumentNullException(nameof(propertyMappingService));
         }
 
         public void AddArticle(Article article)
@@ -30,7 +34,7 @@ namespace CatLog.Api.Data.Implements
 
         public async Task<bool> ArticleExistsAsync(long articleId)
         {
-            return await _context.Articles.AnyAsync(x => x.Id==articleId); ////BUG
+            return await _context.Articles.AnyAsync(x => x.Id == articleId); ////BUG
         }
 
         public void RemoveArticle(Article article)
@@ -51,10 +55,18 @@ namespace CatLog.Api.Data.Implements
         {
             var queryExpression = _context.Articles as IQueryable<Article>;
 
-            if (!string.IsNullOrWhiteSpace(parameters.Fields))
+            //取得映射关系字典
+            var mappingDictionary = _propertyMappingService.GetPropertyMapping<ArticleDto, Article>();
+
+            if (!string.IsNullOrWhiteSpace(parameters.Select))
             {
-                // 数据塑形
+                queryExpression = queryExpression.ApplySelect(parameters.Select, mappingDictionary);
             }
+            if (!string.IsNullOrWhiteSpace(parameters.OrderBy))
+            {
+                queryExpression = queryExpression.ApplyOrderBy(parameters.OrderBy, mappingDictionary);
+            }
+
             return await PagedList<Article>.CreateAsync(queryExpression, parameters.PageNumber, parameters.PageSize);
         }
 
