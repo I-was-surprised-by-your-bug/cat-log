@@ -1,9 +1,6 @@
 ﻿using CatLog.Api.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CatLog.Api.Controllers
 {
@@ -19,6 +16,9 @@ namespace CatLog.Api.Controllers
             var links = new List<LinkDto>();
             links.Add(new LinkDto(Url.Link(nameof(GetRoot), new { }),
                       "self",
+                      "GET"));
+            links.Add(new LinkDto(Url.Link(nameof(ArticlesController.GetArticles), new { }),
+                      "articles",
                       "GET"));
             var response = new
             {

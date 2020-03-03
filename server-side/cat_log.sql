@@ -25,6 +25,7 @@ CREATE TABLE `t_articles`  (
   `article_id` bigint(255) NOT NULL AUTO_INCREMENT COMMENT '文章ID',
   `article_title` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标题',
   `article_content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '内容',
+  `article_introduction` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '引言',
   `article_views_count` bigint(20) NOT NULL DEFAULT 0 COMMENT '浏览量',
   `article_time` datetime(0) NOT NULL COMMENT '发表时间',
   `article_like_count` bigint(20) NOT NULL DEFAULT 0 COMMENT '点赞数',

@@ -1,9 +1,10 @@
 ﻿using CatLog.Api.Data.Contexts;
 using CatLog.Api.Data.Interfaces;
+using CatLog.Api.DtoParameters;
 using CatLog.Api.Entities;
+using CatLog.Api.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,11 +30,7 @@ namespace CatLog.Api.Data.Implements
 
         public async Task<bool> ArticleExistsAsync(long articleId)
         {
-            if (articleId == null)
-            {
-                throw new ArgumentNullException(nameof(articleId));
-            }
-            return await _context.Articles.AnyAsync(x => x.Id == articleId);
+            return await _context.Articles.AnyAsync(x => x.Id==articleId); ////BUG
         }
 
         public void RemoveArticle(Article article)
@@ -47,16 +44,18 @@ namespace CatLog.Api.Data.Implements
 
         public async Task<Article> GetArticleAsync(long articleId)
         {
-            if (articleId == null)
-            {
-                throw new ArgumentNullException(nameof(articleId));
-            }
-            return _context.Articles.Where(x => x.Id == articleId).FirstOrDefault();
+            return _context.Articles.FirstOrDefault(x => x.Id == articleId);
         }
 
-        public async Task<IEnumerable<Article>> GetArticlesAsync()
+        public async Task<PagedList<Article>> GetArticlesAsync(ArticleDtoParameters parameters)
         {
-            return await _context.Articles.ToListAsync();
+            var queryExpression = _context.Articles as IQueryable<Article>;
+
+            if (!string.IsNullOrWhiteSpace(parameters.Fields))
+            {
+                //数据属性
+            }
+            return await PagedList<Article>.CreateAsync(queryExpression, parameters.PageNumber, parameters.PageSize);
         }
 
         public async Task<bool> SaveAsync()

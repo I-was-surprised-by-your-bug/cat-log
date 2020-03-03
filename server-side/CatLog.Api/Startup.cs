@@ -1,3 +1,4 @@
+using AutoMapper;
 using CatLog.Api.Data.Contexts;
 using CatLog.Api.Data.Implements;
 using CatLog.Api.Data.Interfaces;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using System;
 
 namespace CatLog.Api
 {
@@ -55,9 +57,12 @@ namespace CatLog.Api
                     };
                 });
 
+            // 添加 Mapper 服务，扫描当前应用域的所有 Assemblies 寻找 AutoMapper 的映射关系
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddDbContext<DbCatLogContext>(options =>
             {
-                options.UseMySQL(Configuration.GetConnectionString("DbCatLogConnection"));
+                options.UseMySql(Configuration.GetConnectionString("DbCatLogConnection"));
             });
 
             services.AddScoped<IArticleDao, ArticleDao>();
