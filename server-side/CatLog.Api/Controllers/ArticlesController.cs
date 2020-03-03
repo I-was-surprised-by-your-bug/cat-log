@@ -58,5 +58,21 @@ namespace CatLog.Api.Controllers
         }
 
         #endregion HttpGet
+
+        #region HttpDelete
+        [HttpDelete("{articleId}", Name = nameof(DeleteArticle))]
+        public async Task<IActionResult> DeleteArticle([FromRoute]long articleId)
+        {
+            var article = await _articleDao.GetArticleAsync(articleId);
+            if (article == null)
+            {
+                return NotFound();
+            }
+            _articleDao.RemoveArticle(article);
+            await _articleDao.SaveAsync();
+            return NoContent();
+        }
+        #endregion HttpDelete
+
     }
 }
