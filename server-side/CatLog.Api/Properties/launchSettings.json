@@ -4,7 +4,7 @@
     "CatLog.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "root",
+      "launchUrl": "api",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
