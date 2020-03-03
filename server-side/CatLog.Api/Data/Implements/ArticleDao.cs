@@ -53,14 +53,14 @@ namespace CatLog.Api.Data.Implements
 
             if (!string.IsNullOrWhiteSpace(parameters.Fields))
             {
-                //数据属性
+                // 数据塑形
             }
             return await PagedList<Article>.CreateAsync(queryExpression, parameters.PageNumber, parameters.PageSize);
         }
 
         public async Task<bool> SaveAsync()
         {
-            throw new NotImplementedException();
+            return await _context.SaveChangesAsync() >= 0;
         }
 
         void IArticleDao.UpdateArticle(Article article)
