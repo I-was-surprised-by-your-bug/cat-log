@@ -68,8 +68,9 @@ namespace CatLog.Api
             });
 
             services.AddScoped<IArticleDao, ArticleDao>();
+            services.AddScoped<ISectionDao, SectionDao>();
 
-            //属性映射服务
+            //属性映射服务，用于 OrderBy、Select
             services.AddTransient<IPropertyMappingService, PropertyMappingService>();
         }
 

@@ -17,8 +17,11 @@ namespace CatLog.Api.Controllers
             links.Add(new LinkDto(Url.Link(nameof(GetRoot), new { }),
                       "self",
                       "GET"));
+            links.Add(new LinkDto(Url.Link(nameof(SectionController.GetSections), new { }),
+                      "sections",
+                      "GET"));
             links.Add(new LinkDto(Url.Link(nameof(AllArticlesController.GetArticles), new { }),
-                      "all_articles",
+                      "articles",
                       "GET"));
             var response = new
             {
