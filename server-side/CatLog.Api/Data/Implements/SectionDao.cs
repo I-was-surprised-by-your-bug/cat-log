@@ -2,6 +2,7 @@
 using CatLog.Api.Data.Interfaces;
 using CatLog.Api.Data.Models;
 using CatLog.Api.DtoParameters;
+using CatLog.Api.Dtos;
 using CatLog.Api.Helpers;
 using CatLog.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -61,8 +62,8 @@ namespace CatLog.Api.Data.Implements
             {
                 queryExpression = queryExpression.ApplyOrderBy(parameters.OrderBy, mappingDictionary);
             }
-            
-            return await PagedList<Article>.CreateAsync(queryExpression, parameters.PageNumber, parameters.PageSize);
+
+            return await PagedList<Section>.CreateAsync(queryExpression, parameters.PageNumber, parameters.PageSize);
         }
 
         public async Task<bool> SaveAsync()
