@@ -1,20 +1,15 @@
 ﻿namespace CatLog.Api.DtoParameters
 {
-    public class ArticleDtoParameters
+    public class SectionDtoParameters
     {
         private const int MaxPageSize = 40;
 
-        private int _pageSize = 10;
+        private int _pageSize = 20;
 
         /// <summary>
         /// 当前页码
         /// </summary>
         public int PageNumber { get; set; } = 1;
-
-        /// <summary>
-        /// 数据塑形参数
-        /// </summary>
-        public string Select { get; set; }
 
         /// <summary>
         /// 排序参数

@@ -26,6 +26,15 @@ namespace CatLog.Api.Services.Implements
                 {"ColumnId",new PropertyMappingValue(new List<string>{"ColumnId"}) },
             };
 
+        //SectionDto 的属性映射关系字典
+        private readonly Dictionary<string, PropertyMappingValue> _sectionPropertyMapping
+            = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase) //Key 大小写不敏感
+            {
+                {"Id",new PropertyMappingValue(new List<string>{"Id"}) },
+                {"Name",new PropertyMappingValue(new List<string>{"Name"}) },
+                {"Description",new PropertyMappingValue(new List<string>{"Description"}) }
+            };
+
         /// <summary>
         /// “指明 TSource 与 TDestination 的属性映射关系字典”的列表
         /// </summary>
@@ -36,6 +45,7 @@ namespace CatLog.Api.Services.Implements
             //向列表中添加属性映射关系字典，同时指明该字典对应的源类型与目标类型
             //即向列表中添加“指明 TSource 与 TDestination 的属性映射关系字典”
             _propertyMappings.Add(new PropertyMappingDictionary<ArticleDto, Article>(_articlePropertyMapping));
+            _propertyMappings.Add(new PropertyMappingDictionary<SectionDto, Section>(_sectionPropertyMapping));
         }
 
         /// <summary>

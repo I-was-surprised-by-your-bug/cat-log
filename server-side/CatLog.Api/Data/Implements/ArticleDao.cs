@@ -34,7 +34,13 @@ namespace CatLog.Api.Data.Implements
 
         public async Task<bool> ArticleExistsAsync(long articleId)
         {
-            return await _context.TArticles.AnyAsync(x => x.Id == articleId); ////BUG
+            /*
+             * 使用 MySql.Data.EntityFrameworkCore 库 8.0.19 版本时，此处引发错误
+             * InvalidOperationException: No coercion operator is defined between types 'System.Int16' and 'System.Boolean'.
+             * 更换为 Pomelo.EntityFrameworkCore.MySql 库后运行正常
+             * https://ask.csdn.net/questions/1056992
+             */
+            return await _context.TArticles.AnyAsync(x => x.Id == articleId);
         }
 
         public void RemoveArticle(Article article)
@@ -76,7 +82,7 @@ namespace CatLog.Api.Data.Implements
             return await _context.SaveChangesAsync() >= 0;
         }
 
-        void IArticleDao.UpdateArticle(Article article)
+        public void UpdateArticle(Article article)
         {
             // EF Core 自动实现
         }
