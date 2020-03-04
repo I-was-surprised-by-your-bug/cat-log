@@ -18,11 +18,11 @@ namespace CatLog.Api.Controllers
     [ApiController]
     public class AllArticlesController : ControllerBase
     {
-        private readonly IArticleDao _articleDao;
+        private readonly IArticleRepository _articleDao;
         private readonly IMapper _mapper;
         private readonly IPropertyMappingService _propertyMappingService;
 
-        public AllArticlesController(IArticleDao articleDao, IMapper mapper, IPropertyMappingService propertyMappingService)
+        public AllArticlesController(IArticleRepository articleDao, IMapper mapper, IPropertyMappingService propertyMappingService)
         {
             _articleDao = articleDao ?? throw new ArgumentNullException(nameof(articleDao));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -60,18 +60,18 @@ namespace CatLog.Api.Controllers
                                                                               Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                                                                           }));
 
-            var returnDto = _mapper.Map<IEnumerable<ArticleDto>>(pagedArticles);
+            var returnDtos = _mapper.Map<IEnumerable<ArticleDto>>(pagedArticles);
 
             /*
              * 在 ArticleDao 中已经对 select 进行了处理，未被 select 的属性为默认值（null、0 等）
              * 如果想对返回的数据进行塑形，可以启用以下方法
              * 该方法使 API 更加规范，并且节约网络流量，但可能会略微降低性能，可以按需启用。
              */
-            return Ok(returnDto.ShapeData(parameters.Select));
+            return Ok(returnDtos.ShapeData(parameters.Select));
             /*
              */
 
-            return Ok(returnDto);
+            return Ok(returnDtos);
         }
 
         [HttpGet("{articleId}", Name = nameof(GetArticle))]

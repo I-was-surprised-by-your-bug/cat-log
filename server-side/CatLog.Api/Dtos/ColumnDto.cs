@@ -1,6 +1,6 @@
 ﻿namespace CatLog.Api.Dtos
 {
-    public class ColumnDto
+    public class SectionDto
     {
         /// <summary>
         /// 栏目 ID

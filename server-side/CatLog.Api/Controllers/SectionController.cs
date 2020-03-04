@@ -17,11 +17,11 @@ namespace CatLog.Api.Controllers
     [ApiController]
     public class SectionController : ControllerBase
     {
-        private readonly ISectionDao _sectionDao;
+        private readonly ISectionRepository _sectionDao;
         private readonly IMapper _mapper;
         private readonly IPropertyMappingService _propertyMappingService;
 
-        public SectionController(ISectionDao sectionDao, IMapper mapper, IPropertyMappingService propertyMappingService)
+        public SectionController(ISectionRepository sectionDao, IMapper mapper, IPropertyMappingService propertyMappingService)
         {
             _sectionDao = sectionDao ?? throw new ArgumentNullException(nameof(sectionDao));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -55,8 +55,8 @@ namespace CatLog.Api.Controllers
                                                                               Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                                                                           }));
 
-            var returnDto = _mapper.Map<IEnumerable<SectionDto>>(pagedSections);
-            return Ok(returnDto);
+            var returnDtos = _mapper.Map<IEnumerable<SectionDto>>(pagedSections);
+            return Ok(returnDtos);
         }
 
         [HttpGet("{sectionId}", Name = nameof(GetSection))]
