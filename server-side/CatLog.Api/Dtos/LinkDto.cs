@@ -1,4 +1,4 @@
-﻿namespace CatLog.Api.Models
+﻿namespace CatLog.Api.Dtos
 {
     /// <summary>
     /// HATEOAS 的 link Dto

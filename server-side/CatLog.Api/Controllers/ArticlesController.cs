@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using CatLog.Api.Data.Interfaces;
+using CatLog.Api.Data.Models;
 using CatLog.Api.DtoParameters;
-using CatLog.Api.Models;
+using CatLog.Api.Dtos;
+using CatLog.Api.Helpers;
+using CatLog.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
-using CatLog.Api.Helpers;
-using CatLog.Api.Services.Interfaces;
-using CatLog.Api.Entities;
 
 namespace CatLog.Api.Controllers
 {
@@ -63,9 +63,9 @@ namespace CatLog.Api.Controllers
             var returnDto = _mapper.Map<IEnumerable<ArticleDto>>(pagedArticles);
 
             /*
-             * 在 ArticleDao 中已经对 select 进行了一次处理，未被 select 中的属性为默认值（null、0 等）
+             * 在 ArticleDao 中已经对 select 进行了处理，未被 select 的属性为默认值（null、0 等）
              * 如果想对返回的数据进行塑形，可以启用以下方法
-             * 该方法使 API 更加规范，并且节约网络流量，但可能会略微降低性能，请按需启用。
+             * 该方法使 API 更加规范，并且节约网络流量，但可能会略微降低性能，可以按需启用。
              */
             return Ok(returnDto.ShapeData(parameters.Select));
             /*

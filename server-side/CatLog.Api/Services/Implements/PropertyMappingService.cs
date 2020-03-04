@@ -1,10 +1,9 @@
-﻿using CatLog.Api.Entities;
-using CatLog.Api.Models;
+﻿using CatLog.Api.Data.Models;
+using CatLog.Api.Dtos;
 using CatLog.Api.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CatLog.Api.Services.Implements
 {
@@ -24,6 +23,7 @@ namespace CatLog.Api.Services.Implements
                 {"Time",new PropertyMappingValue(new List<string>{"Time"}) },
                 {"ViewsCount",new PropertyMappingValue(new List<string>{"ViewsCount"}) },
                 {"LikeCount",new PropertyMappingValue(new List<string>{"LikeCount"}) },
+                {"ColumnId",new PropertyMappingValue(new List<string>{"ColumnId"}) },
             };
 
         /// <summary>

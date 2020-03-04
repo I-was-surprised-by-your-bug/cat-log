@@ -1,5 +1,5 @@
-﻿using CatLog.Api.DtoParameters;
-using CatLog.Api.Entities;
+﻿using CatLog.Api.Data.Models;
+using CatLog.Api.DtoParameters;
 using CatLog.Api.Helpers;
 using System.Threading.Tasks;
 

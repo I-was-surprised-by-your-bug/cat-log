@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace CatLog.Api.Models
+namespace CatLog.Api.Dtos
 {
     public class ArticleDto
     {
         /// <summary>
-        /// 文章ID
+        /// 文章 ID
         /// </summary>
         public long Id { get; set; }
 
@@ -38,5 +38,10 @@ namespace CatLog.Api.Models
         /// 点赞数
         /// </summary>
         public int LikeCount { get; set; }
+
+        /// <summary>
+        /// 栏目 ID
+        /// </summary>
+        public long ColumnId { get; set; }
     }
 }
