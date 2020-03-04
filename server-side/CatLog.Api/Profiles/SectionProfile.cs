@@ -5,7 +5,7 @@ using CatLog.Api.Dtos;
 namespace CatLog.Api.Profiles
 {
     /// <summary>
-    /// AutoMapper 针对 Article 的映射关系
+    /// AutoMapper 针对 Section 的映射关系
     /// </summary>
     public class SectionProfile : Profile
     {

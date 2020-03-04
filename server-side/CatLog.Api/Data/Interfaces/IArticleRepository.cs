@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CatLog.Api.Data.Interfaces
 {
-    public interface IArticleDao
+    public interface IArticleRepository
     {
         Task<PagedList<Article>> GetArticlesAsync(ArticleDtoParameters parameters);
         Task<Article> GetArticleAsync(long articleId);

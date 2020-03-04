@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace CatLog.Api.Data.Implements
 {
-    public class ArticleDao : IArticleDao
+    public class ArticleRepository : IArticleRepository
     {
         private readonly CatLogContext _context;
         private readonly IPropertyMappingService _propertyMappingService;
 
-        public ArticleDao(CatLogContext context, IPropertyMappingService propertyMappingService)
+        public ArticleRepository(CatLogContext context, IPropertyMappingService propertyMappingService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _propertyMappingService = propertyMappingService ?? throw new ArgumentNullException(nameof(propertyMappingService));

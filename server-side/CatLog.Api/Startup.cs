@@ -67,8 +67,9 @@ namespace CatLog.Api
                 options.UseMySql(Configuration.GetConnectionString("DbCatLogConnection"));
             });
 
-            services.AddScoped<IArticleDao, ArticleDao>();
-            services.AddScoped<ISectionDao, SectionDao>();
+            services.AddScoped<ISectionRepository, SectionRepository>();
+            services.AddScoped<IColumnRepository, ColumnRepository>();
+            services.AddScoped<IArticleRepository, ArticleRepository>();
 
             //属性映射服务，用于 OrderBy、Select
             services.AddTransient<IPropertyMappingService, PropertyMappingService>();

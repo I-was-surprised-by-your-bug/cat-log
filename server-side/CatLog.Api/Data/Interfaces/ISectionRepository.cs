@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CatLog.Api.Data.Interfaces
 {
-    public interface ISectionDao
+    public interface ISectionRepository
     {
         Task<PagedList<Section>> GetSectionsAsync(SectionDtoParameters parameters);
         Task<Section> GetSectionAsync(long sectionId);

@@ -13,41 +13,45 @@ using System.Threading.Tasks;
 
 namespace CatLog.Api.Controllers
 {
-    [Route("api/sections")]
     [ApiController]
-    public class SectionController : ControllerBase
+    [Route("api/sections/{sectionId}/columns")]
+    public class ColumnController : ControllerBase
     {
-        private readonly ISectionRepository _sectionDao;
+        private readonly IColumnRepository _columnDao;
         private readonly IMapper _mapper;
         private readonly IPropertyMappingService _propertyMappingService;
 
-        public SectionController(ISectionRepository sectionDao, IMapper mapper, IPropertyMappingService propertyMappingService)
+        public ColumnController(IColumnRepository columnDao, IMapper mapper, IPropertyMappingService propertyMappingService)
         {
-            _sectionDao = sectionDao ?? throw new ArgumentNullException(nameof(sectionDao));
+            _columnDao = columnDao ?? throw new ArgumentNullException(nameof(columnDao));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _propertyMappingService = propertyMappingService ?? throw new ArgumentNullException(nameof(propertyMappingService));
         }
 
         #region HttpGet
 
-        [HttpGet(Name = nameof(GetSections))]
-        public async Task<IActionResult> GetSections([FromQuery]SectionDtoParameters parameters)
+        [HttpGet(Name = nameof(GetColumns))]
+        public async Task<IActionResult> GetColumns([FromRoute] long sectionId, [FromQuery]ColumnDtoParameters parameters)
         {
             // 无需先判断字符串是否为 Null, ValidMappingExistsFor 对 Null 值返回 true
-            if (!_propertyMappingService.ValidMappingExistsFor<SectionDto, Section>(parameters.OrderBy))
+            if (!_propertyMappingService.ValidMappingExistsFor<ColumnDto, Column>(parameters.OrderBy))
             {
                 return BadRequest();
             }
+            if (!await _columnDao.SectionExistsAsync(sectionId))
+            {
+                return NotFound();
+            }
 
-            var pagedSections = await _sectionDao.GetSectionsAsync(parameters);
+            var pagedColumns = await _columnDao.GetColumnsAsync(sectionId, parameters);
 
             //向 Headers 中添加翻页信息
             var paginationMetdata = new
             {
-                totalCount = pagedSections.TotalCount,
-                pageSize = pagedSections.PageSize,
-                currentPage = pagedSections.PageNumber,
-                totalPages = pagedSections.TotalPages
+                totalCount = pagedColumns.TotalCount,
+                pageSize = pagedColumns.PageSize,
+                currentPage = pagedColumns.PageNumber,
+                totalPages = pagedColumns.TotalPages
             };
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetdata,
                                                                           new JsonSerializerOptions
@@ -55,35 +59,39 @@ namespace CatLog.Api.Controllers
                                                                               Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                                                                           }));
 
-            var returnDtos = _mapper.Map<IEnumerable<SectionDto>>(pagedSections);
+            var returnDtos = _mapper.Map<IEnumerable<ColumnDto>>(pagedColumns);
             return Ok(returnDtos);
         }
 
-        [HttpGet("{sectionId}", Name = nameof(GetSection))]
-        public async Task<IActionResult> GetSection([FromRoute]long sectionId)
+        [HttpGet("{columnId}", Name = nameof(GetColumn))]
+        public async Task<IActionResult> GetColumn([FromRoute]long sectionId, [FromRoute]long columnId)
         {
-            if(!await _sectionDao.SectionExistsAsync(sectionId))
+            if (!await _columnDao.ColumnExistsAsync(sectionId, columnId))
             {
                 return NotFound();
             }
-            var section = await _sectionDao.GetSectionAsync(sectionId);
-            var returnDto = _mapper.Map<SectionDto>(section);
+            var column = await _columnDao.GetColumnAsync(columnId);
+            var returnDto = _mapper.Map<ColumnDto>(column);
             return Ok(returnDto);
         }
 
         #endregion HttpGet
 
         #region HttpDelete
-        [HttpDelete("{sectionId}", Name = nameof(DeleteSection))]
-        public async Task<IActionResult> DeleteSection([FromRoute]long sectionId)
+        [HttpDelete("{columnId}", Name = nameof(DeleteColumn))]
+        public async Task<IActionResult> DeleteColumn([FromRoute]long sectionId, [FromRoute]long columnId)
         {
-            var section = await _sectionDao.GetSectionAsync(sectionId);
-            if (section == null)
+            if (!await _columnDao.SectionExistsAsync(sectionId))
             {
                 return NotFound();
             }
-            _sectionDao.RemoveSection(section);
-            await _sectionDao.SaveAsync();
+            var column = await _columnDao.GetColumnAsync(columnId);
+            if (column == null)
+            {
+                return NotFound();
+            }
+            _columnDao.RemoveColumn(column);
+            await _columnDao.SaveAsync();
             return NoContent();
         }
         #endregion HttpDelete
