@@ -62,7 +62,7 @@ namespace CatLog.Api
             // 添加 Mapper 服务，扫描当前应用域的所有 Assemblies 寻找 AutoMapper 的映射关系
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddDbContext<DbCatLogContext>(options =>
+            services.AddDbContext<CatLogContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("DbCatLogConnection"));
             });

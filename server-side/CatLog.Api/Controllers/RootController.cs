@@ -1,4 +1,4 @@
-﻿using CatLog.Api.Models;
+﻿using CatLog.Api.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 

@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
-using CatLog.Api.Entities;
-using CatLog.Api.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CatLog.Api.Data.Models;
+using CatLog.Api.Dtos;
 
 namespace CatLog.Api.Profiles
 {
