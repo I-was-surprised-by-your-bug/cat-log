@@ -14,15 +14,15 @@ using System.Threading.Tasks;
 
 namespace CatLog.Api.Controllers
 {
-    [Route("api/articles")]
+    [Route("api/allArticles")]
     [ApiController]
-    public class ArticlesController : ControllerBase
+    public class AllArticlesController : ControllerBase
     {
         private readonly IArticleDao _articleDao;
         private readonly IMapper _mapper;
         private readonly IPropertyMappingService _propertyMappingService;
 
-        public ArticlesController(IArticleDao articleDao, IMapper mapper, IPropertyMappingService propertyMappingService)
+        public AllArticlesController(IArticleDao articleDao, IMapper mapper, IPropertyMappingService propertyMappingService)
         {
             _articleDao = articleDao ?? throw new ArgumentNullException(nameof(articleDao));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
