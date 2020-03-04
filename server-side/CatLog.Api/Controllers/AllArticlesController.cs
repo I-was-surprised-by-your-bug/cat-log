@@ -82,7 +82,8 @@ namespace CatLog.Api.Controllers
                 return NotFound();
             }
             var article = await _articleDao.GetArticleAsync(articleId);
-            return Ok(article);
+            var returnDto = _mapper.Map<ArticleDto>(article);
+            return Ok(returnDto);
         }
 
         #endregion HttpGet
