@@ -25,7 +25,7 @@ namespace CatLog.Api.Data.Implements
 
         public void AddColumn(Column column)
         {
-            if (column == null)
+            if (column is null)
             {
                 throw new ArgumentNullException(nameof(column));
             }
@@ -49,23 +49,22 @@ namespace CatLog.Api.Data.Implements
 
         public void RemoveColumn(Column column)
         {
-            if (column == null)
+            if (column is null)
             {
                 throw new ArgumentNullException(nameof(column));
             }
             _context.TColumns.Remove(column);
         }
 
-        public async Task<Column> GetColumnAsync(long columnId)
+        public async Task<Column> GetColumnAsync(long sectionId, long columnId)
         {
-            return _context.TColumns.FirstOrDefault(x => x.Id == columnId);
+            return await _context.TColumns.FirstOrDefaultAsync(x => x.SectionId == sectionId && x.Id == columnId);
         }
 
         public async Task<PagedList<Column>> GetColumnsAsync(long sectionId, ColumnDtoParameters parameters)
         {
             var queryExpression = _context.TColumns.Where(x => x.SectionId == sectionId);
-
-
+            
             if (!string.IsNullOrWhiteSpace(parameters.OrderBy))
             {
                 //取得映射关系字典
