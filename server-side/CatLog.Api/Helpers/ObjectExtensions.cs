@@ -66,5 +66,26 @@ namespace CatLog.Api.Helpers
 
             return expandoObj;
         }
+
+        /// <summary>
+        /// 将 Object 转为键值对形式，Key 为属性名，Value 为属性值
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static IDictionary<string, object> ToKeyValuePairs<TSource>(this TSource source)
+        {
+            var dic = new Dictionary<string, object>();
+            //获得 fields 字符串指定的 TSource 中的各属性
+            var propertyInfos = typeof(TSource).GetProperties(BindingFlags.IgnoreCase  //忽略属性名大小写
+                                                            | BindingFlags.Public     //搜索公共成员
+                                                            | BindingFlags.Instance);
+            foreach (var propertyInfo in propertyInfos)
+            {
+                var propertyValue = propertyInfo.GetValue(source);
+                dic.Add(propertyInfo.Name, propertyValue);
+            }
+            return dic;
+        }
     }
 }

@@ -8,12 +8,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Linq;
 
 namespace CatLog.Api
 {
@@ -58,6 +60,15 @@ namespace CatLog.Api
                         };
                     };
                 });
+
+            services.Configure<MvcOptions>(options =>
+            {
+                // 配置 NewtonsoftJsonOutputFormatter 的 SupportedMediaTypes
+                var newtonSoftJsonOutputFormatter = options.OutputFormatters
+                                                    .OfType<NewtonsoftJsonOutputFormatter>()
+                                                    ?.FirstOrDefault();
+                newtonSoftJsonOutputFormatter?.SupportedMediaTypes.Add("application/hateoas+json");
+            });
 
             // 添加 Mapper 服务，扫描当前应用域的所有 Assemblies 寻找 AutoMapper 的映射关系
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -30,8 +30,10 @@ namespace CatLog.Api.Controllers
 
         #region HttpGet
 
-        [HttpGet(Name = nameof(GetColumns))]
-        public async Task<IActionResult> GetColumns([FromRoute] long sectionId, [FromQuery]ColumnDtoParameters parameters)
+        [HttpGet(Name = nameof(GetColumnsForSection))]
+        public async Task<IActionResult> GetColumnsForSection([FromHeader(Name = "Accept")] string mediaType,
+                                                    [FromRoute] long sectionId,
+                                                    [FromQuery]ColumnDtoParameters parameters)
         {
             // 无需先判断字符串是否为 Null, ValidMappingExistsFor 对 Null 值返回 true
             if (!_propertyMappingService.ValidMappingExistsFor<ColumnDto, Column>(parameters.OrderBy))
@@ -63,8 +65,8 @@ namespace CatLog.Api.Controllers
             return Ok(returnDtos);
         }
 
-        [HttpGet("{columnId}", Name = nameof(GetColumn))]
-        public async Task<IActionResult> GetColumn([FromRoute]long sectionId, [FromRoute]long columnId)
+        [HttpGet("{columnId}", Name = nameof(GetColumnForSection))]
+        public async Task<IActionResult> GetColumnForSection([FromRoute]long sectionId, [FromRoute]long columnId)
         {
             var column = await _columnDao.GetColumnAsync(sectionId, columnId);
             if (column is null)
@@ -78,8 +80,8 @@ namespace CatLog.Api.Controllers
         #endregion HttpGet
 
         #region HttpDelete
-        [HttpDelete("{columnId}", Name = nameof(DeleteColumn))]
-        public async Task<IActionResult> DeleteColumn([FromRoute]long sectionId, [FromRoute]long columnId)
+        [HttpDelete("{columnId}", Name = nameof(DeleteColumnForSection))]
+        public async Task<IActionResult> DeleteColumnForSection([FromRoute]long sectionId, [FromRoute]long columnId)
         {
             var column = await _columnDao.GetColumnAsync(sectionId, columnId);
             if (column is null)
