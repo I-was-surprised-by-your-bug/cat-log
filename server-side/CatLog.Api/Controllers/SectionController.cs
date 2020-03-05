@@ -33,8 +33,8 @@ namespace CatLog.Api.Controllers
         #region HttpGet
 
         [HttpGet(Name = nameof(GetSections))]
-        public async Task<IActionResult> GetSections([FromHeader(Name = "Accept")] string mediaType,
-                                                     [FromQuery]SectionDtoParameters parameters)
+        public async Task<IActionResult> GetSections([FromQuery]SectionDtoParameters parameters,
+                                                     [FromHeader(Name = "Accept")] string mediaTypeStr)
         {
             // 无需先判断字符串是否为 Null, ValidMappingExistsFor 对 Null 值返回 true
             if (!_propertyMappingService.ValidMappingExistsFor<SectionDto, Section>(parameters.OrderBy))
@@ -61,10 +61,7 @@ namespace CatLog.Api.Controllers
             var sectionDtos = _mapper.Map<IEnumerable<SectionDto>>(pagedSections);
 
             // 是否要求 HATEOAS 规范，在返回值中添加 links
-            bool mediaTypeParsed = MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType);
-            bool isHateoas = mediaTypeParsed ? parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase) //大小写不敏感
-                                              : false;
-            if (isHateoas)
+            if (mediaTypeStr.AcceptHateoasMediaType())
             {
                 // 首先将 Sections 列表中的每一个 Section 转为键值对形式，并添加 links 键值对。
                 var sectionDtosWithLinks = new List<IDictionary<string, Object>>();
@@ -74,33 +71,31 @@ namespace CatLog.Api.Controllers
                     dtoDic.Add("links", CreateLinksForSection(dto.Id));
                     sectionDtosWithLinks.Add(dtoDic);
                 }
-                // 新建容器 sectionDtosDics，将上一步整理好的 Sections 列表作为 value 放入容器，再为该容器添加 links。
-                var sectionDtosDics = new Dictionary<string, Object>();
-                sectionDtosDics.Add("value", sectionDtosWithLinks);
-                sectionDtosDics.Add("links", CreateLinksForSections(parameters, pagedSections.HasPrevious, pagedSections.HasNext));
-                return Ok(sectionDtosDics);
+                // 新建容器，将上一步整理好的 Section 列表作为 value 放入容器，再为该容器添加 links。
+                var linkedCollectionResource = new
+                {
+                    value = sectionDtosWithLinks,
+                    links = CreateLinksForSections(parameters, pagedSections.HasPrevious, pagedSections.HasNext)
+                };
+                return Ok(linkedCollectionResource);
             }
 
             return Ok(sectionDtos);
         }
 
         [HttpGet("{sectionId}", Name = nameof(GetSection))]
-        public async Task<IActionResult> GetSection([FromHeader(Name = "Accept")] string mediaType,
-                                                    [FromRoute]long sectionId)
+        public async Task<IActionResult> GetSection([FromRoute]long sectionId,
+                                                    [FromHeader(Name = "Accept")] string mediaTypeStr)
         {
-            if (!await _sectionDao.SectionExistsAsync(sectionId))
+            var section = await _sectionDao.GetSectionAsync(sectionId);
+            if (section is null)
             {
                 return NotFound();
             }
-
-            var section = await _sectionDao.GetSectionAsync(sectionId);
             var sectionDto = _mapper.Map<SectionDto>(section);
 
             // 是否要求 HATEOAS 规范，在返回值中添加 links
-            bool mediaTypeParsed = MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType);
-            bool isHateoas = mediaTypeParsed? parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase) //大小写不敏感
-                                              : false;
-            if (isHateoas)
+            if (mediaTypeStr.AcceptHateoasMediaType())
             {
                 var sectionDtoDic = sectionDto.ToKeyValuePairs();
                 sectionDtoDic.Add("links", CreateLinksForSection(sectionId));

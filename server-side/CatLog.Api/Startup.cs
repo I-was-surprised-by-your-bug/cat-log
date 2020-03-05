@@ -67,7 +67,7 @@ namespace CatLog.Api
                 var newtonSoftJsonOutputFormatter = options.OutputFormatters
                                                     .OfType<NewtonsoftJsonOutputFormatter>()
                                                     ?.FirstOrDefault();
-                newtonSoftJsonOutputFormatter?.SupportedMediaTypes.Add("application/hateoas+json");
+                newtonSoftJsonOutputFormatter?.SupportedMediaTypes.Add("application/vnd.hateoas+json");
             });
 
             // 添加 Mapper 服务，扫描当前应用域的所有 Assemblies 寻找 AutoMapper 的映射关系

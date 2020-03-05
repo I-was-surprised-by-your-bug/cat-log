@@ -59,10 +59,43 @@ namespace CatLog.Api.Data.Implements
             return await _context.TArticles.FirstOrDefaultAsync(x => x.Id == articleId);
         }
 
+        public async Task<Article> GetArticleForColumnAsync(long columnId, long articleId)
+        {
+            return await _context.TArticles.FirstOrDefaultAsync(x => x.ColumnId == columnId && x.Id == articleId);
+        }
+
         public async Task<PagedList<Article>> GetArticlesAsync(ArticleDtoParameters parameters)
         {
             var queryExpression = _context.TArticles as IQueryable<Article>;
 
+            return await IQueryableArticlesToPagedListAsync(queryExpression, parameters);
+        }
+
+        public async Task<PagedList<Article>> GetArticlesForColumnAsync(long columnId, ArticleDtoParameters parameters)
+        {
+            var queryExpression = _context.TArticles.Where(x => x.ColumnId == columnId);
+
+            return await IQueryableArticlesToPagedListAsync(queryExpression, parameters);
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            return await _context.SaveChangesAsync() >= 0;
+        }
+
+        public void UpdateArticle(Article article)
+        {
+            // EF Core 自动实现
+        }
+
+        /// <summary>
+        /// 根据 ArticleDtoParameters，对 IQueryable<Article> 进行 orderBy、Selecte、翻页等操作
+        /// </summary>
+        /// <param name="queryExpression">IQueryable<Article></param>
+        /// <param name="parameters">ArticleDtoParameters</param>
+        /// <returns>通过 orderBy、Selecte 等操作处理后的 PagedList<Article></returns>
+        private async Task<PagedList<Article>> IQueryableArticlesToPagedListAsync(IQueryable<Article> queryExpression, ArticleDtoParameters parameters)
+        {
             //映射关系字典
             Dictionary<string, PropertyMappingValue> mappingDictionary = null;
 
@@ -78,18 +111,8 @@ namespace CatLog.Api.Data.Implements
                 mappingDictionary ??= _propertyMappingService.GetPropertyMapping<ArticleDto, Article>();
                 queryExpression = queryExpression.ApplySelect(parameters.Select, mappingDictionary);
             }
-            
+
             return await PagedList<Article>.CreateAsync(queryExpression, parameters.PageNumber, parameters.PageSize);
-        }
-
-        public async Task<bool> SaveAsync()
-        {
-            return await _context.SaveChangesAsync() >= 0;
-        }
-
-        public void UpdateArticle(Article article)
-        {
-            // EF Core 自动实现
         }
     }
 }
