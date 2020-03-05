@@ -47,7 +47,7 @@ namespace CatLog.Api.Controllers
                 return NotFound();
             }
 
-            var pagedColumns = await _columnDao.GetColumnsAsync(sectionId, parameters);
+            var pagedColumns = await _columnDao.GetColumnsForSectionAsync(sectionId, parameters);
 
             //向 Headers 中添加翻页信息
             var paginationMetdata = new
@@ -94,7 +94,7 @@ namespace CatLog.Api.Controllers
                                                              [FromRoute]long sectionId,
                                                              [FromRoute]long columnId)
         {
-            var column = await _columnDao.GetColumnAsync(sectionId, columnId);
+            var column = await _columnDao.GetColumnForSectionAsync(sectionId, columnId);
             if (column is null)
             {
                 return NotFound();
@@ -120,7 +120,7 @@ namespace CatLog.Api.Controllers
         [HttpDelete("{columnId}", Name = nameof(DeleteColumnForSection))]
         public async Task<IActionResult> DeleteColumnForSection([FromRoute]long sectionId, [FromRoute]long columnId)
         {
-            var column = await _columnDao.GetColumnAsync(sectionId, columnId);
+            var column = await _columnDao.GetColumnForSectionAsync(sectionId, columnId);
             if (column is null)
             {
                 return NotFound();

@@ -56,12 +56,12 @@ namespace CatLog.Api.Data.Implements
             _context.TColumns.Remove(column);
         }
 
-        public async Task<Column> GetColumnAsync(long sectionId, long columnId)
+        public async Task<Column> GetColumnForSectionAsync(long sectionId, long columnId)
         {
             return await _context.TColumns.FirstOrDefaultAsync(x => x.SectionId == sectionId && x.Id == columnId);
         }
 
-        public async Task<PagedList<Column>> GetColumnsAsync(long sectionId, ColumnDtoParameters parameters)
+        public async Task<PagedList<Column>> GetColumnsForSectionAsync(long sectionId, ColumnDtoParameters parameters)
         {
             var queryExpression = _context.TColumns.Where(x => x.SectionId == sectionId);
             

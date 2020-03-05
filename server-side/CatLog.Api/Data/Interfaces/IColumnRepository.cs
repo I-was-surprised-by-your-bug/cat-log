@@ -7,8 +7,8 @@ namespace CatLog.Api.Data.Interfaces
 {
     public interface IColumnRepository
     {
-        Task<PagedList<Column>> GetColumnsAsync(long sectionId, ColumnDtoParameters parameters);
-        Task<Column> GetColumnAsync(long sectionId, long columnId);
+        Task<PagedList<Column>> GetColumnsForSectionAsync(long sectionId, ColumnDtoParameters parameters);
+        Task<Column> GetColumnForSectionAsync(long sectionId, long columnId);
         void AddColumn(Column column);
         void UpdateColumn(Column column);
         void RemoveColumn(Column column);
