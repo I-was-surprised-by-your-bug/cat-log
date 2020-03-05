@@ -4,9 +4,11 @@ using CatLog.Api.Data.Models;
 using CatLog.Api.DtoParameters;
 using CatLog.Api.Dtos;
 using CatLog.Api.Helpers;
+using CatLog.Api.Services.Implements;
 using CatLog.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,7 +27,7 @@ namespace CatLog.Api.Data.Implements
 
         public void AddArticle(Article article)
         {
-            if (article == null)
+            if (article is null)
             {
                 throw new ArgumentNullException(nameof(article));
             }
@@ -45,7 +47,7 @@ namespace CatLog.Api.Data.Implements
 
         public void RemoveArticle(Article article)
         {
-            if (article == null)
+            if (article is null)
             {
                 throw new ArgumentNullException(nameof(article));
             }
@@ -54,23 +56,26 @@ namespace CatLog.Api.Data.Implements
 
         public async Task<Article> GetArticleAsync(long articleId)
         {
-            return _context.TArticles.FirstOrDefault(x => x.Id == articleId);
+            return await _context.TArticles.FirstOrDefaultAsync(x => x.Id == articleId);
         }
 
         public async Task<PagedList<Article>> GetArticlesAsync(ArticleDtoParameters parameters)
         {
             var queryExpression = _context.TArticles as IQueryable<Article>;
 
-            //取得映射关系字典
-            var mappingDictionary = _propertyMappingService.GetPropertyMapping<ArticleDto, Article>();
+            //映射关系字典
+            Dictionary<string, PropertyMappingValue> mappingDictionary = null;
 
-            #warning 允许 OrderBy 所有属性，即使该属性未被 Select
+#warning 允许 OrderBy 所有属性，即使该属性未被 Select
             if (!string.IsNullOrWhiteSpace(parameters.OrderBy))
             {
+                mappingDictionary = _propertyMappingService.GetPropertyMapping<ArticleDto, Article>();
                 queryExpression = queryExpression.ApplyOrderBy(parameters.OrderBy, mappingDictionary);
             }
             if (!string.IsNullOrWhiteSpace(parameters.Select))
             {
+                // 通过 ??= 减少获取映射关系字典的次数
+                mappingDictionary ??= _propertyMappingService.GetPropertyMapping<ArticleDto, Article>();
                 queryExpression = queryExpression.ApplySelect(parameters.Select, mappingDictionary);
             }
             

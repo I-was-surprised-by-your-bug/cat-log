@@ -25,7 +25,7 @@ namespace CatLog.Api.Data.Implements
 
         public void AddSection(Section section)
         {
-            if (section == null)
+            if (section is null)
             {
                 throw new ArgumentNullException(nameof(section));
             }
@@ -39,7 +39,7 @@ namespace CatLog.Api.Data.Implements
 
         public void RemoveSection(Section section)
         {
-            if (section == null)
+            if (section is null)
             {
                 throw new ArgumentNullException(nameof(section));
             }
@@ -48,7 +48,7 @@ namespace CatLog.Api.Data.Implements
 
         public async Task<Section> GetSectionAsync(long sectionId)
         {
-            return _context.TSections.FirstOrDefault(x => x.Id == sectionId);
+            return await _context.TSections.FirstOrDefaultAsync(x => x.Id == sectionId);
         }
 
         public async Task<PagedList<Section>> GetSectionsAsync(SectionDtoParameters parameters)

@@ -66,11 +66,11 @@ namespace CatLog.Api.Controllers
         [HttpGet("{columnId}", Name = nameof(GetColumn))]
         public async Task<IActionResult> GetColumn([FromRoute]long sectionId, [FromRoute]long columnId)
         {
-            if (!await _columnDao.ColumnExistsAsync(sectionId, columnId))
+            var column = await _columnDao.GetColumnAsync(sectionId, columnId);
+            if (column is null)
             {
                 return NotFound();
             }
-            var column = await _columnDao.GetColumnAsync(columnId);
             var returnDto = _mapper.Map<ColumnDto>(column);
             return Ok(returnDto);
         }
@@ -81,12 +81,8 @@ namespace CatLog.Api.Controllers
         [HttpDelete("{columnId}", Name = nameof(DeleteColumn))]
         public async Task<IActionResult> DeleteColumn([FromRoute]long sectionId, [FromRoute]long columnId)
         {
-            if (!await _columnDao.SectionExistsAsync(sectionId))
-            {
-                return NotFound();
-            }
-            var column = await _columnDao.GetColumnAsync(columnId);
-            if (column == null)
+            var column = await _columnDao.GetColumnAsync(sectionId, columnId);
+            if (column is null)
             {
                 return NotFound();
             }
