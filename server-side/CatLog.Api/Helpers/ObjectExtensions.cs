@@ -78,8 +78,8 @@ namespace CatLog.Api.Helpers
             var dic = new Dictionary<string, object>();
             //获得 fields 字符串指定的 TSource 中的各属性
             var propertyInfos = typeof(TSource).GetProperties(BindingFlags.IgnoreCase  //忽略属性名大小写
-                                                            | BindingFlags.Public     //搜索公共成员
-                                                            | BindingFlags.Instance);
+                                                              | BindingFlags.Public     //搜索公共成员
+                                                              | BindingFlags.Instance);
             foreach (var propertyInfo in propertyInfos)
             {
                 var propertyValue = propertyInfo.GetValue(source);
