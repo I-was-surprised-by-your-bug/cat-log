@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -150,7 +148,7 @@ namespace CatLog.Api.Controllers
                             pageNumber = parameters.PageNumber - 1,
                             pageSize = parameters.PageSize,
                             orderBy = parameters.OrderBy
-                        }); ;
+                        });
                 case ResourceUriType.NextPage: //下一页
                     return Url.Link(
                         nameof(GetSections),
@@ -200,24 +198,24 @@ namespace CatLog.Api.Controllers
         /// <param name="parameters">SectionDtoParameters</param>
         /// <param name="hasPrevious">是否有上一页</param>
         /// <param name="hasNext">是否有下一页</param>
-        /// <returns>GetCompanies 集合资源的 links</returns>
+        /// <returns>Section 集合资源的 links</returns>
         private IEnumerable<LinkDto> CreateLinksForSections(SectionDtoParameters parameters, bool hasPrevious, bool hasNext)
         {
             var links = new List<LinkDto>();
-            //CurrentPage 当前页链接
+            // 当前页链接
             links.Add(new LinkDto(CreateSectionsResourceUri(parameters, ResourceUriType.CurrentPage),
                       "self",
                       "GET"));
             if (hasPrevious)
             {
-                //PreviousPage 上一页链接
+                // 上一页链接
                 links.Add(new LinkDto(CreateSectionsResourceUri(parameters, ResourceUriType.PreviousPage),
                           "previous_page",
                           "GET"));
             }
             if (hasNext)
             {
-                //NextPage 下一页链接
+                // 下一页链接
                 links.Add(new LinkDto(CreateSectionsResourceUri(parameters, ResourceUriType.NextPage),
                           "next_page",
                           "GET"));
