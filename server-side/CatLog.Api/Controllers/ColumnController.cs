@@ -33,9 +33,9 @@ namespace CatLog.Api.Controllers
         #region HttpGet
 
         [HttpGet(Name = nameof(GetColumnsForSection))]
-        public async Task<IActionResult> GetColumnsForSection([FromHeader(Name = "Accept")] string mediaType,
-                                                              [FromRoute] long sectionId,
-                                                              [FromQuery]ColumnDtoParameters parameters)
+        public async Task<IActionResult> GetColumnsForSection([FromRoute] long sectionId,
+                                                              [FromQuery]ColumnDtoParameters parameters,
+                                                              [FromHeader(Name = "Accept")] string mediaTypeStr)
         {
             // 无需先判断字符串是否为 Null, ValidMappingExistsFor 对 Null 值返回 true
             if (!_propertyMappingService.ValidMappingExistsFor<ColumnDto, Column>(parameters.OrderBy))
@@ -66,10 +66,7 @@ namespace CatLog.Api.Controllers
             var columnDtos = _mapper.Map<IEnumerable<ColumnDto>>(pagedColumns);
 
             // 是否要求 HATEOAS 规范，在返回值中添加 links
-            bool mediaTypeParsed = MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType);
-            bool isHateoas = mediaTypeParsed ? parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase) //大小写不敏感
-                                              : false;
-            if (isHateoas)
+            if (mediaTypeStr.AcceptHateoasMediaType())
             {
                 // 首先将 Columns 列表中的每一个 Column 转为键值对形式，并添加 links 键值对。
                 var columnDtosWithLinks = new List<IDictionary<string, Object>>();
@@ -79,20 +76,22 @@ namespace CatLog.Api.Controllers
                     dtoDic.Add("links", CreateLinksForColumn(sectionId, dto.Id));
                     columnDtosWithLinks.Add(dtoDic);
                 }
-                // 新建容器 columnDtosDics，将上一步整理好的 Columns 列表作为 value 放入容器，再为该容器添加 links。
-                var sectionDtosDics = new Dictionary<string, Object>();
-                sectionDtosDics.Add("value", columnDtosWithLinks);
-                sectionDtosDics.Add("links", CreateLinksForColumns(sectionId, parameters, pagedColumns.HasPrevious, pagedColumns.HasNext));
-                return Ok(sectionDtosDics);
+                // 新建容器，将上一步整理好的 Column 列表作为 value 放入容器，再为该容器添加 links。
+                var linkedCollectionResource = new
+                {
+                    value = columnDtosWithLinks,
+                    links = CreateLinksForColumns(sectionId, parameters, pagedColumns.HasPrevious, pagedColumns.HasNext)
+                };
+                return Ok(linkedCollectionResource);
             }
 
             return Ok(columnDtos);
         }
 
         [HttpGet("{columnId}", Name = nameof(GetColumnForSection))]
-        public async Task<IActionResult> GetColumnForSection([FromHeader(Name = "Accept")] string mediaType,
-                                                             [FromRoute]long sectionId,
-                                                             [FromRoute]long columnId)
+        public async Task<IActionResult> GetColumnForSection([FromRoute]long sectionId,
+                                                             [FromRoute]long columnId,
+                                                             [FromHeader(Name = "Accept")] string mediaTypeStr)
         {
             var column = await _columnDao.GetColumnForSectionAsync(sectionId, columnId);
             if (column is null)
@@ -102,10 +101,7 @@ namespace CatLog.Api.Controllers
             var columnDto = _mapper.Map<ColumnDto>(column);
 
             // 是否要求 HATEOAS 规范，在返回值中添加 links
-            bool mediaTypeParsed = MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType);
-            bool isHateoas = mediaTypeParsed ? parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase) //大小写不敏感
-                                              : false;
-            if (isHateoas)
+            if (mediaTypeStr.AcceptHateoasMediaType())
             {
                 var columnDtoDic = columnDto.ToKeyValuePairs();
                 columnDtoDic.Add("links", CreateLinksForColumn(sectionId, columnId));
@@ -135,6 +131,7 @@ namespace CatLog.Api.Controllers
         /// <summary>
         /// 生成 Column 列表上一页、下一页或当前页的 Uri
         /// </summary>
+        /// <param name="sectionId">Section Id</param>
         /// <param name="parameters">ColumnDtoParameters</param>
         /// <param name="uriType">ResourceUriType</param>
         /// <returns>跳转到目标页的 Uri</returns>
@@ -194,6 +191,9 @@ namespace CatLog.Api.Controllers
             links.Add(new LinkDto(Url.Link(nameof(DeleteColumnForSection), new { sectionId, columnId }),
                                   "delete_column_for_section",
                                   "DELETE"));
+            links.Add(new LinkDto(Url.Link(nameof(ArticlesController.GetArticlesForColumn), new { sectionId, columnId }),
+                                  "articles",
+                                  "GET"));
             return links;
         }
 
