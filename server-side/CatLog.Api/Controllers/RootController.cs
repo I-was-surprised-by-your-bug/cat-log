@@ -10,6 +10,10 @@ namespace CatLog.Api.Controllers
     {
         #region HttpGet
 
+        /// <summary>
+        /// 根目录
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetRoot))]
         public IActionResult GetRoot()
         {

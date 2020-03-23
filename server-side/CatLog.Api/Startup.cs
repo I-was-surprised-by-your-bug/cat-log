@@ -13,8 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace CatLog.Api
@@ -31,9 +33,33 @@ namespace CatLog.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // 添加 Swagger 支持
+            services.AddSwaggerGen(options =>
+            {
+                // 添加 Swagger 文档信息
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "CatLogWebApi",
+                    Version = "v1",
+                    Description = "CatLog WebApi",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "TestName",
+                        Email = "null@gmail.com",
+                        Url = new Uri("https://null.com")
+                    }
+                });
+
+                // 为 Swagger JSON and UI 设置 xml 文档注释路径
+                var basePath = Path.GetDirectoryName(AppContext.BaseDirectory);
+                var xmlPath = Path.Combine(basePath, "CatLog.Api.xml");
+                options.IncludeXmlComments(xmlPath);
+            });
+
             services.AddControllers(options =>
             {
                 options.ReturnHttpNotAcceptable = true; //启用 406 状态码
+
             })
                 //使用 AddNewtonsoftJson 作为 json 序列化工具
                 .AddNewtonsoftJson(options =>
@@ -95,6 +121,16 @@ namespace CatLog.Api
             }
 
             app.UseHttpsRedirection();
+
+            // 启用 Swagger 中间件
+            app.UseSwagger();
+
+            // 配置 SwaggerUI
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "CatLogWebApi");
+                options.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

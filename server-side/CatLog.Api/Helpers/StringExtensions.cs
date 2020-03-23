@@ -13,7 +13,7 @@ namespace CatLog.Api.Helpers
         /// <returns>客户端是否接受 HATEOAS 媒体类型</returns>
         public static bool AcceptHateoasMediaType(this string mediaTypeStr)
         {
-            return mediaTypeStr.Contains("hateoas+json");
+            return mediaTypeStr is null ? false : mediaTypeStr.Contains("hateoas+json", StringComparison.InvariantCultureIgnoreCase);
 
             //var mediaTypes = mediaTypeStr.Split(',');
             //bool mediaTypeParseSucceed = MediaTypeHeaderValue.TryParseList(mediaTypes, out IList<MediaTypeHeaderValue> parsedValues);
