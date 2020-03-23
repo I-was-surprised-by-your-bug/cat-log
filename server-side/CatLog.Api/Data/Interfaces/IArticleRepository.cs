@@ -14,6 +14,7 @@ namespace CatLog.Api.Data.Interfaces
         void AddArticle(Article article);
         void UpdateArticle(Article article);
         void RemoveArticle(Article article);
+        Task<bool> SectionExistsAsync(long sectionId);
         Task<bool> ArticleExistsAsync(long articleId);
         Task<bool> SaveAsync();
     }

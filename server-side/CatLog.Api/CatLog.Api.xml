@@ -1,0 +1,406 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CatLog.Api</name>
+    </assembly>
+    <members>
+        <member name="M:CatLog.Api.Controllers.ArticlesController.GetArticlesForColumn(System.Int64,System.Int64,CatLog.Api.DtoParameters.ArticleDtoParameters,System.String)">
+            <summary>
+            获得栏目的所有文章
+            </summary>
+            <param name="sectionId">板块 ID</param>
+            <param name="columnId">栏目 ID</param>
+            <param name="parameters">Uri 请求参数</param>
+            <param name="mediaTypeStr">Accept media type 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.ArticlesController.GetArticleForColumn(System.Int64,System.Int64,System.Int64,System.String)">
+            <summary>
+            获得一篇文章
+            </summary>
+            <param name="sectionId">板块 ID</param>
+            <param name="columnId">栏目 ID</param>
+            <param name="articleId">文章 ID</param>
+            <param name="mediaTypeStr">Accept media type 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.ArticlesController.CreateArticlesResourceUri(System.Int64,System.Int64,CatLog.Api.DtoParameters.ArticleDtoParameters,CatLog.Api.Helpers.ResourceUriType)">
+            <summary>
+            生成 Article 列表上一页、下一页或当前页的 Uri
+            </summary>
+            <param name="sectionId">Section Id</param>
+            <param name="columnId">Column Id</param>
+            <param name="parameters">ArticleDtoParameters</param>
+            <param name="uriType">ResourceUriType</param>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.ArticlesController.CreateLinksForArticle(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            为 Article 单个资源创建 HATEOAS 的 links
+            </summary>
+            <param name="sectionId">Section Id</param>
+            <param name="columnId">Column Id</param>
+            <param name="articleId">Article Id</param>
+            <returns>Article 单个资源的 links</returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.ArticlesController.CreateLinksForArticles(System.Int64,System.Int64,CatLog.Api.DtoParameters.ArticleDtoParameters,System.Boolean,System.Boolean)">
+            <summary>
+            为 Article 集合资源创建 HATEOAS 的 links
+            </summary>
+            <param name="parameters">ArticleDtoParameters</param>
+            <param name="hasPrevious">是否有上一页</param>
+            <param name="hasNext">是否有下一页</param>
+            <returns>Article 集合资源的 links</returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.ColumnController.CreateColumnsResourceUri(System.Int64,CatLog.Api.DtoParameters.ColumnDtoParameters,CatLog.Api.Helpers.ResourceUriType)">
+            <summary>
+            生成 Column 列表上一页、下一页或当前页的 Uri
+            </summary>
+            <param name="sectionId">Section Id</param>
+            <param name="parameters">ColumnDtoParameters</param>
+            <param name="uriType">ResourceUriType</param>
+            <returns>跳转到目标页的 Uri</returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.ColumnController.CreateLinksForColumn(System.Int64,System.Int64)">
+            <summary>
+            为 Column 单个资源创建 HATEOAS 的 links
+            </summary>
+            <param name="sectionId">Section Id</param>
+            <param name="columnId">Column Id</param>
+            <returns>Column 单个资源的 links</returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.ColumnController.CreateLinksForColumns(System.Int64,CatLog.Api.DtoParameters.ColumnDtoParameters,System.Boolean,System.Boolean)">
+            <summary>
+            为 Column 集合资源创建 HATEOAS 的 links
+            </summary>
+            <param name="parameters">ColumnDtoParameters</param>
+            <param name="hasPrevious">是否有上一页</param>
+            <param name="hasNext">是否有下一页</param>
+            <returns>Column 集合资源的 links</returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.SectionController.CreateSectionsResourceUri(CatLog.Api.DtoParameters.SectionDtoParameters,CatLog.Api.Helpers.ResourceUriType)">
+            <summary>
+            生成 Section 列表上一页、下一页或当前页的 Uri
+            </summary>
+            <param name="parameters">SectionDtoParameters</param>
+            <param name="uriType">ResourceUriType</param>
+            <returns>跳转到目标页的 Uri</returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.SectionController.CreateLinksForSection(System.Int64)">
+            <summary>
+            为 Section 单个资源创建 HATEOAS 的 links
+            </summary>
+            <param name="sectionId">Section Id</param>
+            <returns>Section 单个资源的 links</returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.SectionController.CreateLinksForSections(CatLog.Api.DtoParameters.SectionDtoParameters,System.Boolean,System.Boolean)">
+            <summary>
+            为 Section 集合资源创建 HATEOAS 的 links
+            </summary>
+            <param name="parameters">SectionDtoParameters</param>
+            <param name="hasPrevious">是否有上一页</param>
+            <param name="hasNext">是否有下一页</param>
+            <returns>Section 集合资源的 links</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CatLog.Api.Data.Implements.ArticleRepository.IQueryableArticlesToPagedListAsync(System.Linq.IQueryable{CatLog.Api.Data.Models.Article},CatLog.Api.DtoParameters.ArticleDtoParameters)" -->
+        <member name="P:CatLog.Api.DtoParameters.ArticleDtoParameters.PageNumber">
+            <summary>
+            当前页码
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.DtoParameters.ArticleDtoParameters.Select">
+            <summary>
+            数据塑形参数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.DtoParameters.ArticleDtoParameters.OrderBy">
+            <summary>
+            排序参数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.DtoParameters.ArticleDtoParameters.PageSize">
+            <summary>
+            单页条目数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.DtoParameters.ColumnDtoParameters.PageNumber">
+            <summary>
+            当前页码
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.DtoParameters.ColumnDtoParameters.OrderBy">
+            <summary>
+            排序参数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.DtoParameters.ColumnDtoParameters.PageSize">
+            <summary>
+            单页条目数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.DtoParameters.SectionDtoParameters.PageNumber">
+            <summary>
+            当前页码
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.DtoParameters.SectionDtoParameters.OrderBy">
+            <summary>
+            排序参数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.DtoParameters.SectionDtoParameters.PageSize">
+            <summary>
+            单页条目数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ArticleDto.Id">
+            <summary>
+            文章 ID
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ArticleDto.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ArticleDto.Introduction">
+            <summary>
+            引言
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ArticleDto.Content">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ArticleDto.Time">
+            <summary>
+            发表时间
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ArticleDto.ViewsCount">
+            <summary>
+            点击量
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ArticleDto.LikeCount">
+            <summary>
+            点赞数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ArticleDto.ColumnId">
+            <summary>
+            栏目 ID
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.SectionDto.Id">
+            <summary>
+            栏目 ID
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.SectionDto.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.SectionDto.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="T:CatLog.Api.Dtos.LinkDto">
+            <summary>
+            HATEOAS 的 link Dto
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ColumnDto.Id">
+            <summary>
+            栏目 ID
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ColumnDto.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Dtos.ColumnDto.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:CatLog.Api.Helpers.IEnumerableExtensions" -->
+        <member name="M:CatLog.Api.Helpers.IEnumerableExtensions.ShapeData``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            对集合资源进行数据塑形
+            </summary>
+            <typeparam name="TSource">资源类型</typeparam>
+            <param name="source">资源集合</param>
+            <param name="select">Uri Query 中的 fields 字符串，大小写不敏感，用于指明需要的属性/字段；如果需要所有属性传入 null 即可</param>
+            <returns>塑形后的集合资源</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:CatLog.Api.Helpers.IQueryableExtensions" -->
+        <member name="M:CatLog.Api.Helpers.IQueryableExtensions.ApplyOrderBy``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.Dictionary{System.String,CatLog.Api.Services.Implements.PropertyMappingValue})">
+            <summary>
+            对集合资源进行排序
+            </summary>
+            <typeparam name="T">资源类型</typeparam>
+            <param name="source">IQueryable 资源集合</param>
+            <param name="orderBy">Uri Query 中的 orderBy 字符串，用于声明资源集合的排序规则；如果无需排序传入 null 即可</param>
+            <param name="mappingDictionary">资源类型的映射关系字典</param>
+            <returns>排好序的 IQueryable 资源集合</returns>
+        </member>
+        <member name="M:CatLog.Api.Helpers.IQueryableExtensions.ApplySelect``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.Dictionary{System.String,CatLog.Api.Services.Implements.PropertyMappingValue})">
+            <summary>
+            对集合资源进行塑形
+            </summary>
+            <typeparam name="T">资源类型</typeparam>
+            <param name="source">IQueryable 资源集合</param>
+            <param name="orderBy">Uri Query 中的 orderBy 字符串，用于声明资源集合的排序规则；如果无需排序传入 null 即可</param>
+            <param name="mappingDictionary">资源类型的映射关系字典</param>
+            <returns>排好序的 IQueryable 资源集合</returns>
+        </member>
+        <member name="T:CatLog.Api.Helpers.ObjectExtensions">
+            <summary>
+            Object 的拓展方法
+            </summary>
+        </member>
+        <member name="M:CatLog.Api.Helpers.ObjectExtensions.ShapeData``1(``0,System.String)">
+            <summary>
+            对单个资源进行数据塑形
+            </summary>
+            <typeparam name="TSource">资源类型</typeparam>
+            <param name="source">需要塑形的资源</param>
+            <param name="select">Uri Query 中的 fields 字符串，用于指明需要的属性/字段；如果需要所有属性传入 null 即可</param>
+            <returns>塑形后的资源</returns>
+        </member>
+        <member name="M:CatLog.Api.Helpers.ObjectExtensions.ToKeyValuePairs``1(``0)">
+            <summary>
+            将 Object 转为键值对形式，Key 为属性名，Value 为属性值
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CatLog.Api.Helpers.PagedList`1">
+            <summary>
+            对资源集合进行翻页处理并保存翻页信息
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:CatLog.Api.Helpers.PagedList`1.PageNumber">
+            <summary>
+            当前页码
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Helpers.PagedList`1.TotalPages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Helpers.PagedList`1.PageSize">
+            <summary>
+            单页条目数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Helpers.PagedList`1.TotalCount">
+            <summary>
+            总条目数
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Helpers.PagedList`1.HasPrevious">
+            <summary>
+            有上一页
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Helpers.PagedList`1.HasNext">
+            <summary>
+            有下一页
+            </summary>
+        </member>
+        <member name="M:CatLog.Api.Helpers.PagedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32)">
+            <summary>
+            对资源集合进行翻页处理
+            </summary>
+            <param name="source">待翻页的资源集合</param>
+            <param name="pageNumber">指定页码（当前页）</param>
+            <param name="pageSize">每页的资源数量</param>
+            <returns>翻页后，指定页码的资源集合</returns>
+        </member>
+        <member name="T:CatLog.Api.Helpers.ResourceUriType">
+            <summary>
+            指明 Uri 是前往上一页、下一页还是本页的（视频P35）
+            </summary>
+        </member>
+        <member name="M:CatLog.Api.Helpers.StringExtensions.AcceptHateoasMediaType(System.String)">
+            <summary>
+            判断客户端是否主动接受 HATEOAS 媒体类型
+            </summary>
+            <param name="mediaTypeStr">MediaType 字符串</param>
+            <returns>客户端是否接受 HATEOAS 媒体类型</returns>
+        </member>
+        <member name="T:CatLog.Api.Profiles.ArticleProfile">
+            <summary>
+            AutoMapper 针对 Article 的映射关系
+            </summary>
+        </member>
+        <member name="T:CatLog.Api.Profiles.ColumnProfile">
+            <summary>
+            AutoMapper 针对 Column 的映射关系
+            </summary>
+        </member>
+        <member name="T:CatLog.Api.Profiles.SectionProfile">
+            <summary>
+            AutoMapper 针对 Section 的映射关系
+            </summary>
+        </member>
+        <member name="T:CatLog.Api.Services.Implements.PropertyMappingDictionary`2">
+            <summary>
+            指明 TSource 与 TDestination 的属性映射关系字典
+            </summary>
+            <typeparam name="TSource">源类型</typeparam>
+            <typeparam name="TDestination">目标类型</typeparam>
+        </member>
+        <member name="P:CatLog.Api.Services.Implements.PropertyMappingDictionary`2.MappingDictionary">
+            <summary>
+            属性映射关系字典
+            </summary>
+        </member>
+        <member name="T:CatLog.Api.Services.Implements.PropertyMappingService">
+            <summary>
+            属性映射服务
+            </summary>
+        </member>
+        <member name="F:CatLog.Api.Services.Implements.PropertyMappingService._propertyMappings">
+            <summary>
+            “指明 TSource 与 TDestination 的属性映射关系字典”的列表
+            </summary>
+        </member>
+        <member name="M:CatLog.Api.Services.Implements.PropertyMappingService.GetPropertyMapping``2">
+            <summary>
+            如果 TSource 与 TDestination 存在映射关系，返回属性映射关系字典
+            </summary>
+            <typeparam name="TSource">源类型</typeparam>
+            <typeparam name="TDestination">目标类型</typeparam>
+            <returns>从源类型到目标类型的属性映射关系</returns>
+        </member>
+        <member name="M:CatLog.Api.Services.Implements.PropertyMappingService.ValidMappingExistsFor``2(System.String)">
+            <summary>
+            判断 Uri query parameters 的 orderBy 或 select 字符串是否合法
+            </summary>
+            <typeparam name="TSource">源类型</typeparam>
+            <typeparam name="TDestination">目标类型</typeparam>
+            <param name="parameter">Uri Query 中的 parameter 字符串，大小写不敏感</param>
+            <returns>parameter 字符串是否合法</returns>
+        </member>
+        <member name="T:CatLog.Api.Services.Implements.PropertyMappingValue">
+            <summary>
+            单条属性映射关系
+            </summary>
+        </member>
+        <member name="P:CatLog.Api.Services.Implements.PropertyMappingValue.Revert">
+            <summary>
+            排序时顺序是否需要翻转
+            </summary>
+        </member>
+    </members>
+</doc>

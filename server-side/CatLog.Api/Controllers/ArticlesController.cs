@@ -33,6 +33,14 @@ namespace CatLog.Api.Controllers
 
         #region HttpGet
 
+        /// <summary>
+        /// 获得 Column 的所有 Articles
+        /// </summary>
+        /// <param name="sectionId">Section ID</param>
+        /// <param name="columnId">Column ID</param>
+        /// <param name="parameters">Uri parameters</param>
+        /// <param name="mediaTypeStr">Accept media type 字符串</param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetArticlesForColumn))]
         public async Task<IActionResult> GetArticlesForColumn([FromRoute]long sectionId,
                                                               [FromRoute]long columnId,
@@ -47,6 +55,10 @@ namespace CatLog.Api.Controllers
             if (!_propertyMappingService.ValidMappingExistsFor<ArticleDto, Article>(parameters.Select))
             {
                 return BadRequest();
+            }
+            if (!await _articleDao.SectionExistsAsync(sectionId))
+            {
+                return NotFound();
             }
 
             var pagedArticles = await _articleDao.GetArticlesForColumnAsync(columnId, parameters);
@@ -90,12 +102,24 @@ namespace CatLog.Api.Controllers
             return Ok(shapedArticles);
         }
 
+        /// <summary>
+        /// 获得 Column 的一篇 Articlea
+        /// </summary>
+        /// <param name="sectionId">Section ID</param>
+        /// <param name="columnId">Column ID</param>
+        /// <param name="articleId">Article ID</param>
+        /// <param name="mediaTypeStr">Accept media type 字符串</param>
+        /// <returns></returns>
         [HttpGet("{articleId}", Name = nameof(GetArticleForColumn))]
         public async Task<IActionResult> GetArticleForColumn([FromRoute]long sectionId,
                                                              [FromRoute]long columnId,
                                                              [FromRoute]long articleId,
                                                              [FromHeader(Name = "Accept")] string mediaTypeStr)
         {
+            if (!await _articleDao.SectionExistsAsync(sectionId))
+            {
+                return NotFound();
+            }
             var article = await _articleDao.GetArticleForColumnAsync(columnId, articleId);
             if (article is null)
             {

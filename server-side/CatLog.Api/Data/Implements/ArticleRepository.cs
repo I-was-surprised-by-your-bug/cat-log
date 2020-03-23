@@ -34,6 +34,11 @@ namespace CatLog.Api.Data.Implements
             _context.TArticles.Add(article);
         }
 
+        public async Task<bool> SectionExistsAsync(long sectionId)
+        {
+            return await _context.TSections.AnyAsync(x => x.Id == sectionId);
+        }
+
         public async Task<bool> ArticleExistsAsync(long articleId)
         {
             /*

@@ -32,6 +32,13 @@ namespace CatLog.Api.Controllers
 
         #region HttpGet
 
+        /// <summary>
+        /// 获得 Section 的所有 Columns
+        /// </summary>
+        /// <param name="sectionId">sectionId</param>
+        /// <param name="parameters">Uri parameters</param>
+        /// <param name="mediaTypeStr">Accept media type 字符串</param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetColumnsForSection))]
         public async Task<IActionResult> GetColumnsForSection([FromRoute] long sectionId,
                                                               [FromQuery]ColumnDtoParameters parameters,
@@ -88,6 +95,13 @@ namespace CatLog.Api.Controllers
             return Ok(columnDtos);
         }
 
+        /// <summary>
+        /// 获得 Section 的一个 Column
+        /// </summary>
+        /// <param name="sectionId">Section ID</param>
+        /// <param name="columnId">Column ID</param>
+        /// <param name="mediaTypeStr">Accept media type 字符串</param>
+        /// <returns></returns>
         [HttpGet("{columnId}", Name = nameof(GetColumnForSection))]
         public async Task<IActionResult> GetColumnForSection([FromRoute]long sectionId,
                                                              [FromRoute]long columnId,
