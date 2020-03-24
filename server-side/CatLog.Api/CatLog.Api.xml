@@ -4,23 +4,44 @@
         <name>CatLog.Api</name>
     </assembly>
     <members>
+        <member name="M:CatLog.Api.Controllers.AllArticlesController.GetArticles(CatLog.Api.DtoParameters.ArticleDtoParameters)">
+            <summary>
+            获得所有文章（分页）
+            </summary>
+            <param name="parameters">Uri parameters</param>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.AllArticlesController.GetArticle(System.Int64)">
+            <summary>
+            获得一篇指定的文章
+            </summary>
+            <param name="articleId">Article ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.AllArticlesController.DeleteArticle(System.Int64)">
+            <summary>
+            删除一篇指定的文章
+            </summary>
+            <param name="articleId">Article ID</param>
+            <returns></returns>
+        </member>
         <member name="M:CatLog.Api.Controllers.ArticlesController.GetArticlesForColumn(System.Int64,System.Int64,CatLog.Api.DtoParameters.ArticleDtoParameters,System.String)">
             <summary>
-            获得栏目的所有文章
+            获得 Column 的所有 Articles（分页）
             </summary>
-            <param name="sectionId">板块 ID</param>
-            <param name="columnId">栏目 ID</param>
-            <param name="parameters">Uri 请求参数</param>
+            <param name="sectionId">Section ID</param>
+            <param name="columnId">Column ID</param>
+            <param name="parameters">Uri parameters</param>
             <param name="mediaTypeStr">Accept media type 字符串</param>
             <returns></returns>
         </member>
         <member name="M:CatLog.Api.Controllers.ArticlesController.GetArticleForColumn(System.Int64,System.Int64,System.Int64,System.String)">
             <summary>
-            获得一篇文章
+            获得 Column 的一篇指定的 Articlea
             </summary>
-            <param name="sectionId">板块 ID</param>
-            <param name="columnId">栏目 ID</param>
-            <param name="articleId">文章 ID</param>
+            <param name="sectionId">Section ID</param>
+            <param name="columnId">Column ID</param>
+            <param name="articleId">Article ID</param>
             <param name="mediaTypeStr">Accept media type 字符串</param>
             <returns></returns>
         </member>
@@ -52,6 +73,32 @@
             <param name="hasNext">是否有下一页</param>
             <returns>Article 集合资源的 links</returns>
         </member>
+        <member name="M:CatLog.Api.Controllers.ColumnController.GetColumnsForSection(System.Int64,CatLog.Api.DtoParameters.ColumnDtoParameters,System.String)">
+            <summary>
+            获得 Section 的所有 Columns（分页）
+            </summary>
+            <param name="sectionId">sectionId</param>
+            <param name="parameters">Uri parameters</param>
+            <param name="mediaTypeStr">Accept media type 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.ColumnController.GetColumnForSection(System.Int64,System.Int64,System.String)">
+            <summary>
+            获得 Section 的一个指定的 Column
+            </summary>
+            <param name="sectionId">Section ID</param>
+            <param name="columnId">Column ID</param>
+            <param name="mediaTypeStr">Accept media type 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.ColumnController.DeleteColumnForSection(System.Int64,System.Int64)">
+            <summary>
+            删除指定的 Column
+            </summary>
+            <param name="sectionId">Section ID</param>
+            <param name="columnId">Column ID</param>
+            <returns></returns>
+        </member>
         <member name="M:CatLog.Api.Controllers.ColumnController.CreateColumnsResourceUri(System.Int64,CatLog.Api.DtoParameters.ColumnDtoParameters,CatLog.Api.Helpers.ResourceUriType)">
             <summary>
             生成 Column 列表上一页、下一页或当前页的 Uri
@@ -77,6 +124,35 @@
             <param name="hasPrevious">是否有上一页</param>
             <param name="hasNext">是否有下一页</param>
             <returns>Column 集合资源的 links</returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.RootController.GetRoot">
+            <summary>
+            根目录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.SectionController.GetSections(CatLog.Api.DtoParameters.SectionDtoParameters,System.String)">
+            <summary>
+            获得所有 Sections（分页）
+            </summary>
+            <param name="parameters">Uri parameters</param>
+            <param name="mediaTypeStr">Accept media type 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.SectionController.GetSection(System.Int64,System.String)">
+            <summary>
+            获得指定的 Section
+            </summary>
+            <param name="sectionId">Section ID</param>
+            <param name="mediaTypeStr">Accept media type 字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:CatLog.Api.Controllers.SectionController.DeleteSection(System.Int64)">
+            <summary>
+            删除指定的 Section
+            </summary>
+            <param name="sectionId"></param>
+            <returns></returns>
         </member>
         <member name="M:CatLog.Api.Controllers.SectionController.CreateSectionsResourceUri(CatLog.Api.DtoParameters.SectionDtoParameters,CatLog.Api.Helpers.ResourceUriType)">
             <summary>

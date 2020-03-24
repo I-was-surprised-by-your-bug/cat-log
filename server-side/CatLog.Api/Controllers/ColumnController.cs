@@ -33,7 +33,7 @@ namespace CatLog.Api.Controllers
         #region HttpGet
 
         /// <summary>
-        /// 获得 Section 的所有 Columns
+        /// 获得 Section 的所有 Columns（分页）
         /// </summary>
         /// <param name="sectionId">sectionId</param>
         /// <param name="parameters">Uri parameters</param>
@@ -96,7 +96,7 @@ namespace CatLog.Api.Controllers
         }
 
         /// <summary>
-        /// 获得 Section 的一个 Column
+        /// 获得 Section 的一个指定的 Column
         /// </summary>
         /// <param name="sectionId">Section ID</param>
         /// <param name="columnId">Column ID</param>
@@ -127,6 +127,13 @@ namespace CatLog.Api.Controllers
         #endregion HttpGet
 
         #region HttpDelete
+
+        /// <summary>
+        /// 删除指定的 Column
+        /// </summary>
+        /// <param name="sectionId">Section ID</param>
+        /// <param name="columnId">Column ID</param>
+        /// <returns></returns>
         [HttpDelete("{columnId}", Name = nameof(DeleteColumnForSection))]
         public async Task<IActionResult> DeleteColumnForSection([FromRoute]long sectionId, [FromRoute]long columnId)
         {

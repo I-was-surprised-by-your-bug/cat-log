@@ -32,6 +32,12 @@ namespace CatLog.Api.Controllers
 
         #region HttpGet
 
+        /// <summary>
+        /// 获得所有 Sections（分页）
+        /// </summary>
+        /// <param name="parameters">Uri parameters</param>
+        /// <param name="mediaTypeStr">Accept media type 字符串</param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetSections))]
         public async Task<IActionResult> GetSections([FromQuery]SectionDtoParameters parameters,
                                                      [FromHeader(Name = "Accept")] string mediaTypeStr)
@@ -83,6 +89,12 @@ namespace CatLog.Api.Controllers
             return Ok(sectionDtos);
         }
 
+        /// <summary>
+        /// 获得指定的 Section
+        /// </summary>
+        /// <param name="sectionId">Section ID</param>
+        /// <param name="mediaTypeStr">Accept media type 字符串</param>
+        /// <returns></returns>
         [HttpGet("{sectionId}", Name = nameof(GetSection))]
         public async Task<IActionResult> GetSection([FromRoute]long sectionId,
                                                     [FromHeader(Name = "Accept")] string mediaTypeStr)
@@ -108,6 +120,11 @@ namespace CatLog.Api.Controllers
         #endregion HttpGet
 
         #region HttpDelete
+        /// <summary>
+        /// 删除指定的 Section
+        /// </summary>
+        /// <param name="sectionId"></param>
+        /// <returns></returns>
         [HttpDelete("{sectionId}", Name = nameof(DeleteSection))]
         public async Task<IActionResult> DeleteSection([FromRoute]long sectionId)
         {

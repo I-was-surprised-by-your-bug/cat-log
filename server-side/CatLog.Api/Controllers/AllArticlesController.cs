@@ -31,6 +31,11 @@ namespace CatLog.Api.Controllers
 
         #region HttpGet
 
+        /// <summary>
+        /// 获得所有文章（分页）
+        /// </summary>
+        /// <param name="parameters">Uri parameters</param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetArticles))]
         public async Task<IActionResult> GetArticles([FromQuery]ArticleDtoParameters parameters)
         {
@@ -74,6 +79,11 @@ namespace CatLog.Api.Controllers
             return Ok(returnDtos);
         }
 
+        /// <summary>
+        /// 获得一篇指定的文章
+        /// </summary>
+        /// <param name="articleId">Article ID</param>
+        /// <returns></returns>
         [HttpGet("{articleId}", Name = nameof(GetArticle))]
         public async Task<IActionResult> GetArticle([FromRoute]long articleId)
         {
@@ -89,6 +99,12 @@ namespace CatLog.Api.Controllers
         #endregion HttpGet
 
         #region HttpDelete
+
+        /// <summary>
+        /// 删除一篇指定的文章
+        /// </summary>
+        /// <param name="articleId">Article ID</param>
+        /// <returns></returns>
         [HttpDelete("{articleId}", Name = nameof(DeleteArticle))]
         public async Task<IActionResult> DeleteArticle([FromRoute]long articleId)
         {
