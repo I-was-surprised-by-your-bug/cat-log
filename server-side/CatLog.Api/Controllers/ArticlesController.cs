@@ -34,7 +34,7 @@ namespace CatLog.Api.Controllers
         #region HttpGet
 
         /// <summary>
-        /// 获得 Column 的所有 Articles
+        /// 获得 Column 的所有 Articles（分页）
         /// </summary>
         /// <param name="sectionId">Section ID</param>
         /// <param name="columnId">Column ID</param>
@@ -103,7 +103,7 @@ namespace CatLog.Api.Controllers
         }
 
         /// <summary>
-        /// 获得 Column 的一篇 Articlea
+        /// 获得 Column 的一篇指定的 Articlea
         /// </summary>
         /// <param name="sectionId">Section ID</param>
         /// <param name="columnId">Column ID</param>
