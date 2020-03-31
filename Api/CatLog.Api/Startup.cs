@@ -4,6 +4,9 @@ using CatLog.Api.Data.Implements;
 using CatLog.Api.Data.Interfaces;
 using CatLog.Api.Services.Implements;
 using CatLog.Api.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,38 +26,43 @@ namespace CatLog.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment WebHostEnvironment { get; }
+
+        public Startup(IConfiguration configuration,IWebHostEnvironment webHostEnvironment)
         {
             Configuration = configuration;
+            WebHostEnvironment = webHostEnvironment;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // 添加 Swagger 支持
-            services.AddSwaggerGen(options =>
+            if (WebHostEnvironment.IsDevelopment())
             {
-                // 添加 Swagger 文档信息
-                options.SwaggerDoc("v1", new OpenApiInfo
+                // 添加 Swagger 支持
+                services.AddSwaggerGen(options =>
                 {
-                    Title = "CatLogWebApi",
-                    Version = "v1",
-                    Description = "CatLog WebApi",
-                    Contact = new OpenApiContact
+                    // 添加 Swagger 文档信息
+                    options.SwaggerDoc(Configuration["Swagger:Doc:Name"], new OpenApiInfo
                     {
-                        Name = "TestName",
-                        Email = "null@gmail.com",
-                        Url = new Uri("https://null.com")
-                    }
-                });
+                        Title = Configuration["Swagger:Doc:Title"],
+                        Version = Configuration["Swagger:Doc:Version"],
+                        Description = Configuration["Swagger:Doc:Name:Description"],
+                        Contact = new OpenApiContact
+                        {
+                            Name = Configuration["Swagger:Doc:Contact:Name"],
+                            Email = Configuration["Swagger:Doc:Contact:Email"],
+                            Url = new Uri(Configuration["Swagger:Doc:Contact:Url"])
+                        }
+                    });
 
-                // 为 Swagger JSON and UI 设置 xml 文档注释路径
-                var basePath = Path.GetDirectoryName(AppContext.BaseDirectory);
-                var xmlPath = Path.Combine(basePath, "CatLog.Api.xml");
-                options.IncludeXmlComments(xmlPath);
-            });
+                    // 为 Swagger JSON and UI 设置 xml 文档注释路径
+                    var basePath = Path.GetDirectoryName(AppContext.BaseDirectory);
+                    var xmlPath = Path.Combine(basePath, "Catlog.Api.xml");
+                    options.IncludeXmlComments(xmlPath);
+                });
+            }
 
             services.AddControllers(options =>
             {
@@ -73,10 +81,10 @@ namespace CatLog.Api
                     {
                         var problemDetails = new ValidationProblemDetails(context.ModelState)
                         {
-                            Type = "",
-                            Title = "Unprocessable Entity",
+                            Type = Configuration["Status422UnprocessableInfo:Type"],
+                            Title = Configuration["Status422UnprocessableInfo:Title"],
                             Status = StatusCodes.Status422UnprocessableEntity,
-                            Detail = "",
+                            Detail = Configuration["Status422UnprocessableInfo:Detail"],
                             Instance = context.HttpContext.Request.Path
                         };
                         //problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
@@ -118,19 +126,19 @@ namespace CatLog.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // 启用 Swagger 中间件
+                app.UseSwagger();
+                // 配置 SwaggerUI
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint(Configuration["Swagger:Endpoint:Url"], Configuration["Swagger:Endpoint:Name"]);
+                    options.RoutePrefix = string.Empty;
+                });
             }
-
-            app.UseHttpsRedirection();
-
-            // 启用 Swagger 中间件
-            app.UseSwagger();
-
-            // 配置 SwaggerUI
-            app.UseSwaggerUI(options =>
+            else
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "CatLogWebApi");
-                options.RoutePrefix = string.Empty;
-            });
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
 
