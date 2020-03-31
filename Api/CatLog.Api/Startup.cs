@@ -102,9 +102,9 @@ namespace CatLog.Api
                     // 将 JWT 认证处理程序添加到 DI 中以供身份认证服务使用
                     .AddJwtBearer("Bearer", options =>
                     {
-                        options.Authority = "http://localhost:5004";
-                        options.RequireHttpsMetadata = false;
-                        options.Audience = "catlog.api";
+                        options.Authority = Configuration["JwtBearerOptions:Authority"];
+                        options.RequireHttpsMetadata = bool.Parse(Configuration["JwtBearerOptions:RequireHttpsMetadata"]);
+                        options.Audience = Configuration["JwtBearerOptions:Audience"];
                     });
 
             services.Configure<MvcOptions>(options =>
