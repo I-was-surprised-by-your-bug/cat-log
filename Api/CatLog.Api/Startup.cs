@@ -29,7 +29,7 @@ namespace CatLog.Api
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment WebHostEnvironment { get; }
 
-        public Startup(IConfiguration configuration,IWebHostEnvironment webHostEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             Configuration = configuration;
             WebHostEnvironment = webHostEnvironment;
@@ -95,6 +95,18 @@ namespace CatLog.Api
                     };
                 });
 
+            services.AddAuthorization();
+
+            // 将身份认证服务添加到 DI，并将“Bearer”配置为默认方案
+            services.AddAuthentication("Bearer")
+                    // 将 JWT 认证处理程序添加到 DI 中以供身份认证服务使用
+                    .AddJwtBearer("Bearer", options =>
+                    {
+                        options.Authority = "http://localhost:5004";
+                        options.RequireHttpsMetadata = false;
+                        options.Audience = "catlog.api";
+                    });
+
             services.Configure<MvcOptions>(options =>
             {
                 // 配置 NewtonsoftJsonOutputFormatter 的 SupportedMediaTypes
@@ -142,6 +154,7 @@ namespace CatLog.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
