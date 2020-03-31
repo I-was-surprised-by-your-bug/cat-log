@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4QtZtQqgsjfekCVGnwcHQB+jjl6hle8y5oGqFt7MrQLAWkTQ39lxpu7G8llTLFyMhg6iepkZ28bEOwajrMZtGg==",
+  "dgSpecHash": "itMucjYBqyeO9+mlctoXqFTLTqjFbdi/dCKIb8TmCyZmq9lUwL4KkIooFrYdVfX/bWP0EGsl5TalbMltAxciXQ==",
   "success": true,
-  "projectFilePath": "D:\\repos\\cat-log\\Client\\Catlog.TestClient\\Catlog.TestClient\\Catlog.TestClient.csproj",
+  "projectFilePath": "D:\\repos\\cat-log\\Client\\Catlog.TestClient\\Catlog.TestClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\identitymodel\\4.2.0\\identitymodel.4.2.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.aspnetcore.authentication.openidconnect\\3.1.3\\microsoft.aspnetcore.authentication.openidconnect.3.1.3.nupkg.sha512",

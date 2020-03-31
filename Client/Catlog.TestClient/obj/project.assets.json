@@ -491,11 +491,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\repos\\cat-log\\Client\\Catlog.TestClient\\Catlog.TestClient\\Catlog.TestClient.csproj",
+      "projectUniqueName": "D:\\repos\\cat-log\\Client\\Catlog.TestClient\\Catlog.TestClient.csproj",
       "projectName": "Catlog.TestClient",
-      "projectPath": "D:\\repos\\cat-log\\Client\\Catlog.TestClient\\Catlog.TestClient\\Catlog.TestClient.csproj",
+      "projectPath": "D:\\repos\\cat-log\\Client\\Catlog.TestClient\\Catlog.TestClient.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "D:\\repos\\cat-log\\Client\\Catlog.TestClient\\Catlog.TestClient\\obj\\",
+      "outputPath": "D:\\repos\\cat-log\\Client\\Catlog.TestClient\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
