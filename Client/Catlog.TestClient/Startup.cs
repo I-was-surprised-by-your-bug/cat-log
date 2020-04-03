@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityModel;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,32 +27,23 @@ namespace Catlog.TestClient
         {
             services.AddControllersWithViews();
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             // AddAuthentication 将身份认证服务添加到 DI
             services.AddAuthentication(options =>
             {
-                // 使用 cookie 来本地登录用户
-                options.DefaultScheme = "idsr.oidc";
-                // 将 DefaultChallengeScheme 设置为 "oidc"，因为当我们需要用户登录时，我们将使用 OpenID Connect 协议
-                options.DefaultChallengeScheme = "oidc";
+                options.DefaultScheme = "GitHub.Oauth.State";
+                options.DefaultChallengeScheme = "GitHub";
             })
-                // 使用 AddCookie 添加可以处理 cookie 的处理程序
-                .AddCookie("idsr.oidc")
-                .AddOpenIdConnect("oidc", options =>
+                .AddCookie("GitHub.Oauth.State", options =>
                 {
-                    options.Authority = "http://localhost:5004";
-                    options.RequireHttpsMetadata = false;
-
-                    options.ClientId = "catlog.client";
-                    options.ClientSecret = "69C1A7E1-AC79-4A89-A308-C46998FB86B2";
-                    // SaveTokens 用于在 cookie 中保留来自 IdentityServer 的令牌（稍后将需要它们）
+                    options.LoginPath = "/signin";
+                    options.LogoutPath = "/signout";
+                })
+                .AddGitHub("GitHub", options =>
+                {
+                    options.ClientId = "a29--04e----55-1-c";
+                    options.ClientSecret = "b6--6--4ef7ffcb--3";
+                    options.Scope.Add("user:email");
                     options.SaveTokens = true;
-                    options.ResponseType = "code";
-
-                    options.Scope.Clear();
-                    options.Scope.Add("catlog.api");
-                    options.Scope.Add(OidcConstants.StandardScopes.OpenId);
-                    options.Scope.Add(OidcConstants.StandardScopes.Profile);
                 });
         }
 

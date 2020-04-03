@@ -5,8 +5,6 @@ using CatLog.Api.Data.Interfaces;
 using CatLog.Api.Services.Implements;
 using CatLog.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -97,15 +95,22 @@ namespace CatLog.Api
 
             services.AddAuthorization();
 
-            // 将身份认证服务添加到 DI，并将“Bearer”配置为默认方案
-            services.AddAuthentication("Bearer")
-                    // 将 JWT 认证处理程序添加到 DI 中以供身份认证服务使用
-                    .AddJwtBearer("Bearer", options =>
-                    {
-                        options.Authority = Configuration["JwtBearerOptions:Authority"];
-                        options.RequireHttpsMetadata = bool.Parse(Configuration["JwtBearerOptions:RequireHttpsMetadata"]);
-                        options.Audience = Configuration["JwtBearerOptions:Audience"];
-                    });
+            services.AddAuthentication("GitHub");
+                    //.AddOpenIdConnect("GitHub", options =>
+                    //{
+                    //    options.Authority = "https://api.github.com/user";
+                    //    options.SaveTokens = true;
+                    //});
+                    //.AddJwtBearer("Bearer", options =>
+                    //{
+                    //    options.Authority = "https://api.github.com/user";
+                    //    options.RequireHttpsMetadata = false;
+                    //    options.SaveToken = true;
+                    //    //options.Authority = Configuration["JwtBearerOptions:Authority"];
+                    //    //options.RequireHttpsMetadata = bool.Parse(Configuration["JwtBearerOptions:RequireHttpsMetadata"]);
+                    //    //options.Audience = Configuration["JwtBearerOptions:Audience"];
+                    //});
+                    
 
             services.Configure<MvcOptions>(options =>
             {

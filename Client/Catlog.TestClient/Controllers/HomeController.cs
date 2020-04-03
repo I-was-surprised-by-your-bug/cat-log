@@ -15,7 +15,7 @@ using IdentityModel.Client;
 
 namespace Catlog.TestClient.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,36 +27,41 @@ namespace Catlog.TestClient.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-            Console.WriteLine("---------- 尝试访问 catlog.api ----------");
-            var client = new HttpClient();
-            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5004");
-            if (disco.IsError)
-            {
-                Console.WriteLine($"disco 错误：\n{disco.Error}");
-            }
-            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-            client.SetBearerToken(accessToken);
-            var response = await client.GetAsync("http://localhost:5002/api");
-            if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine(response.StatusCode);
-            }
-            else
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"成功访问 API 资源：\n{content.ToString()}");
-            }
+            //Console.WriteLine("---------- 尝试访问 catlog.api ----------");
+            //var client = new HttpClient();
+            //var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5004");
+            //if (disco.IsError)
+            //{
+            //    Console.WriteLine($"disco 错误：\n{disco.Error}");
+            //}
+            //var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            //client.SetBearerToken(accessToken);
+            //var response = await client.GetAsync("http://localhost:5002/api");
+            //if (!response.IsSuccessStatusCode)
+            //{
+            //    Console.WriteLine(response.StatusCode);
+            //}
+            //else
+            //{
+            //    var content = await response.Content.ReadAsStringAsync();
+            //    Console.WriteLine($"成功访问 API 资源：\n{content.ToString()}");
+            //}
             return View();
         }
-        
+
+        [Authorize]
         public async Task<IActionResult> Privacy()
         {
-            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-            var idToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
-            var refreshToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
-            var authorizationCode = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.Code);
-            Console.WriteLine($"AccessToken:{accessToken}\nIdToken:{idToken}\nRefreshToken:{refreshToken}\nAuthorizationCode:{authorizationCode}");
+            Console.WriteLine("-------------------------A------------------------");
+            var githubAccessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            Console.WriteLine(githubAccessToken);
+            Console.WriteLine("-------------------------B------------------------");
+            Console.WriteLine(User.Identity.Name);
+            foreach (var item in User.Claims)
+            {
+                Console.WriteLine($"{item.Type} -> {item.Value}");
+            }
+            Console.WriteLine("-------------------------C------------------------");
             return View();
         }
 

@@ -7,6 +7,7 @@ namespace CatLog.Api.Controllers
 {
     [Route("api")]
     [ApiController]
+    [Authorize]
     public class RootController : ControllerBase
     {
         #region HttpGet
